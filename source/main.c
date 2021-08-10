@@ -6,7 +6,6 @@
 int
 main(void)
 {
-	gamelaunch();
 	enginestart();
 	return EXIT_SUCCESS;
 }
