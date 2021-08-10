@@ -92,10 +92,11 @@ void creaturemove(Creature*, flag);
 // void drawgameworld();
 
 /* engine */
+void enginepopview(void);
+void enginepushview(ViewState);
+void enginesetview(ViewState);
 void enginestart(void);
 void enginestop(void);
-void engineviewpop(void);
-void engineviewpush(ViewState);
 
 /* game */
 void gamelaunch(void);
@@ -108,6 +109,3 @@ void gamesave(flag);
 boolean inputhasactive(void);
 boolean inputispressed(flag);
 void inputupdate(void);
-
-/* ui */
-// uipopup(...);

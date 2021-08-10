@@ -15,6 +15,37 @@ static void enginedraw(void);
 static void engineupdate(void);
 
 void
+enginepopview(void)
+{
+	assert(engineviewcount > 0);
+	engineviewcount--;
+	drawrequest = True;
+}
+
+void
+enginepushview(ViewState v)
+{
+	assert(engineviewcount < MaxViewStates);
+	engineviews[engineviewcount] = v;
+	engineviewcount++;
+	drawrequest = True;
+}
+
+void
+enginesetview(ViewState v)
+{
+	int i;
+
+	for (i = engineviewcount - 1; i >= 0; i--) {
+		if (engineviews[i].close)
+			engineviews[i].close();
+	}
+
+	engineviewcount = 0;
+	enginepushview(v);
+}
+
+void
 enginestart(void)
 {
 	terminal_open();
@@ -65,21 +96,6 @@ enginestop(void)
 	enginerunning = False;
 }
 
-void
-engineviewpop(void)
-{
-	assert(engineviewcount > 0);
-	engineviewcount--;
-}
-
-void
-engineviewpush(ViewState v)
-{
-	assert(engineviewcount < MaxViewStates);
-	engineviews[engineviewcount] = v;
-	engineviewcount++;
-}
-
 static
 void
 engineanimate(void)
@@ -123,6 +139,8 @@ enginedraw(void)
 			lowestfullscreen = i;
 	}
 
+	terminal_clear();
+
 	if (drawworld) {
 		// TODO
 	}
@@ -131,6 +149,8 @@ enginedraw(void)
 		if (engineviews[i].draw)
 			engineviews[i].draw();
 	}
+
+	terminal_refresh();
 }
 
 static

@@ -41,8 +41,6 @@ static
 void
 sandboxdraw(void)
 {
-	terminal_clear();
-
 	// Title flash
 	if (titleflash)
 		terminal_color(color_from_name("amber"));
@@ -54,8 +52,6 @@ sandboxdraw(void)
 	// Player
 	terminal_color(color_from_argb(255, 255, 255, 255));
 	terminal_put(player.position.x, player.position.y, '@');
-
-	terminal_refresh();
 }
 
 static
@@ -77,4 +73,6 @@ sandboxupdate(void)
 		creaturemove(&player, CompassSouth);
 	else if (inputispressed(InputMoveWest))
 		creaturemove(&player, CompassWest);
+	else if (inputispressed(InputUICancel))
+		enginesetview(ViewMainMenu);
 }
