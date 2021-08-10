@@ -109,25 +109,28 @@ void
 enginedraw(void)
 {
 	int i;
+	int lowestfullscreen;
 	boolean drawworld;
 
+	lowestfullscreen = 0;
 	drawworld = True;
 
 	for (i = 0; i < engineviewcount; i++) {
-		if (engineviews[i].disableworlddraw) {
+		if (engineviews[i].disableworlddraw)
 			drawworld = False;
-			break;
-		}
+		
+		if (engineviews[i].fullscreen)
+			lowestfullscreen = i;
 	}
 
 	if (drawworld) {
 		// TODO
 	}
 
-	// TODO: Hande rendering view layers!
-
-	if (engineviews[engineviewcount - 1].draw)
-		engineviews[engineviewcount - 1].draw();
+	for (i = lowestfullscreen; i < engineviewcount; i++) {
+		if (engineviews[i].draw)
+			engineviews[i].draw();
+	}
 }
 
 static
