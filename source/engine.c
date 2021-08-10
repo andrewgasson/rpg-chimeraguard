@@ -10,10 +10,9 @@ static boolean enginerunning;
 static int engineviewcount;
 static ViewState engineviews[MaxViewStates];
 
-static void engineviewanimate(void);
-static void engineviewdraw(void);
-static ViewState *engineviewpeek(void);
-static void engineviewupdate(void);
+static void engineanimate(void);
+static void enginedraw(void);
+static void engineupdate(void);
 
 void
 enginestart(void)
@@ -37,7 +36,7 @@ enginestart(void)
 				enginerunning = False;
 			} else {
 				drawrequest = True;
-				engineviewupdate();
+				engineupdate();
 			}
 		}
 
@@ -46,12 +45,12 @@ enginestart(void)
 		if (animtimer > EngineAnimRate) {
 			animtimer = 0;
 			drawrequest = True;
-			engineviewanimate();
+			engineanimate();
 		}
 
 		if (drawrequest) {
 			drawrequest = False;
-			engineviewdraw();
+			enginedraw();
 		}
 
 		terminal_delay(1);
@@ -83,43 +82,75 @@ engineviewpush(ViewState v)
 
 static
 void
-engineviewanimate(void)
+engineanimate(void)
 {
-	ViewState *current;
+	int i;
+	boolean animworld;
 
-	current = engineviewpeek();
+	animworld = True;
 
-	if (current && current->animate)
-		current->animate();
+	for (i = 0; i < engineviewcount; i++) {
+		if (engineviews[i].disableworldanim) {
+			animworld = False;
+			break;
+		}
+	}
+
+	if (animworld) {
+		// TODO: animate the world!
+	}
+
+	if (engineviews[engineviewcount - 1].animate)
+		engineviews[engineviewcount - 1].animate();
 }
 
 static
 void
-engineviewdraw(void)
+enginedraw(void)
 {
-	ViewState *current;
+	int i;
+	boolean drawworld;
 
-	current = engineviewpeek();
+	drawworld = True;
 
-	if (current && current->draw)
-		current->draw();
-}
+	for (i = 0; i < engineviewcount; i++) {
+		if (engineviews[i].disableworlddraw) {
+			drawworld = False;
+			break;
+		}
+	}
 
-static
-ViewState*
-engineviewpeek(void)
-{
-	return engineviewcount > 0 ? &engineviews[engineviewcount - 1] : Null;
+	if (drawworld) {
+		// TODO
+	}
+
+	// TODO: Hande rendering view layers!
+
+	if (engineviews[engineviewcount - 1].draw)
+		engineviews[engineviewcount - 1].draw();
 }
 
 static
 void
-engineviewupdate(void)
+engineupdate(void)
 {
-	ViewState *current;
+	int i;
+	boolean processturns;
 
-	current = engineviewpeek();
-	assert(current != Null);
-	assert(current->update != Null);
-	current->update();
+	assert(engineviewcount > 0);
+
+	processturns = True;
+
+	if (processturns) {
+		// TODO
+	}
+
+	for (i = 0; i < engineviewcount; i++) {
+		if (engineviews[i].disableturnprocess) {
+			processturns = False;
+			break;
+		}
+	}
+
+	engineviews[engineviewcount - 1].update();
 }

@@ -47,9 +47,10 @@ struct Creature {
 };
 
 struct ViewState {
-	// boolean fullscreen; /* true stops lower views from drawing */
-	// boolean drawworld; /* true draws the game world before view */
-	// boolean processturns; /* true processes the game turns before update */
+	boolean fullscreen; /* true stops lower views from drawing */
+	boolean disableturnprocess; /* false processes the game turns before update */
+	boolean disableworldanim; /* false allows the game world to animate */
+	boolean disableworlddraw; /* false draws the game world before view */
 	void (*animate)(void);
 	void (*close)(void);
 	void (*draw)(void);
@@ -62,10 +63,6 @@ extern const ViewState ViewSandbox;
 
 extern int currentsaveindex;
 extern Creature player;
-
-/* animate */
-// void animatecreatures(void);
-// ..updates all creature animations. Useful for when state doesn't want to animate (i.e. in pause menu)
 
 /* compass */
 flag compassanticlockwise(flag);

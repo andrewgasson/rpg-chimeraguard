@@ -10,6 +10,10 @@ static void mainmenuopen(void);
 static void mainmenuupdate(void);
 
 const ViewState ViewMainMenu = {
+	.fullscreen = True,
+	.disableturnprocess = True,
+	.disableworldanim = True,
+	.disableworlddraw = True,
 	.animate = mainmenuanimate,
 	.close = mainmenuclose,
 	.draw = mainmenudraw,

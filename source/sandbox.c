@@ -12,6 +12,10 @@ static void sandboxopen(void);
 static void sandboxupdate(void);
 
 const ViewState ViewSandbox = {
+	.fullscreen = False,
+	.disableturnprocess = False,
+	.disableworldanim = False,
+	.disableworlddraw = False,
 	.animate = sandboxanimate,
 	.close = sandboxclose,
 	.draw = sandboxdraw,
