@@ -6,7 +6,6 @@
 static int animtimer;
 static boolean drawrequest;
 static boolean enginerunning;
-static EngineState enginestate;
 
 void
 enginestart(void)
@@ -30,7 +29,7 @@ enginestart(void)
 				enginerunning = False;
 			} else {
 				drawrequest = True;
-				enginestate.update();
+				viewstateupdate();
 			}
 		}
 
@@ -39,35 +38,18 @@ enginestart(void)
 		if (animtimer > EngineAnimRate) {
 			animtimer = 0;
 			drawrequest = True;
-
-			if (enginestate.animate)
-				enginestate.animate();
+			viewstateanimate();
 		}
 
 		if (drawrequest) {
 			drawrequest = False;
-
-			if (enginestate.draw)
-				enginestate.draw();
+			viewstatedraw();
 		}
 
 		terminal_delay(1);
 	}
 
 	terminal_close();
-}
-
-void
-enginestatepop(void)
-{
-	// TODO: Deck
-}
-
-void
-enginestatepush(EngineState s)
-{
-	// TODO: Deck
-	enginestate = s;
 }
 
 void

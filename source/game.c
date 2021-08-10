@@ -8,19 +8,12 @@ int currentsaveindex = -1;
 
 static void gameunloadsave(void);
 
-static
-void
-gameunloadsave(void)
-{
-	// TODO
-}
-
 void
 gamelaunch(void)
 {
 	// Used for doing things like creating config and save files,
 	// setting the initial UI, and etc. It's the "game" starting point.
-	enginestatepush(StateSandbox);
+	viewstatepush(ViewSandbox);
 	gamenewsave(0);
 }
 
@@ -38,6 +31,13 @@ gamenewsave(int saveindex)
 
 void
 gamesave(flag savetype)
+{
+	// TODO
+}
+
+static
+void
+gameunloadsave(void)
 {
 	// TODO
 }

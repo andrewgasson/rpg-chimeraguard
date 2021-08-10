@@ -9,7 +9,7 @@ static void mainmenudraw(void);
 static void mainmenuopen(void);
 static void mainmenuupdate(void);
 
-const EngineState StateMainMenu = {
+const ViewState ViewMainMenu = {
 	.animate = mainmenuanimate,
 	.close = mainmenuclose,
 	.draw = mainmenudraw,

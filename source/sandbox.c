@@ -11,7 +11,7 @@ static void sandboxdraw(void);
 static void sandboxopen(void);
 static void sandboxupdate(void);
 
-const EngineState StateSandbox = {
+const ViewState ViewSandbox = {
 	.animate = sandboxanimate,
 	.close = sandboxclose,
 	.draw = sandboxdraw,

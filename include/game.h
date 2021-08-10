@@ -1,5 +1,5 @@
 typedef struct Creature Creature;
-typedef struct EngineState EngineState;
+typedef struct ViewState ViewState;
 
 enum {
 	CompassNorth,
@@ -10,13 +10,6 @@ enum {
 	CompassSouthWest,
 	CompassWest,
 	CompassNorthWest
-};
-
-enum {
-	EngineAnimRate = 500,
-	EngineDisplayWidth = 80,
-	EngineDisplayHeight = 26,
-	EngineDisplayArea = EngineDisplayWidth * EngineDisplayHeight
 };
 
 enum {
@@ -41,6 +34,11 @@ enum {
 };
 
 enum {
+	EngineAnimRate = 500,
+	EngineDisplayWidth = 80,
+	EngineDisplayHeight = 26,
+	EngineDisplayArea = EngineDisplayWidth * EngineDisplayHeight,
+	MaxViewStates = 8,
 	MaxSaveIndex = 8
 };
 
@@ -48,7 +46,7 @@ struct Creature {
 	Point position;
 };
 
-struct EngineState {
+struct ViewState {
 	void (*animate)(void);
 	void (*close)(void);
 	void (*draw)(void);
@@ -56,8 +54,8 @@ struct EngineState {
 	void (*update)(void); /* mandatory */
 };
 
-extern const EngineState StateMainMenu;
-extern const EngineState StateSandbox;
+extern const ViewState ViewMainMenu;
+extern const ViewState ViewSandbox;
 
 extern int currentsaveindex;
 extern Creature player;
@@ -93,8 +91,6 @@ void creaturemove(Creature*, flag);
 
 /* engine */
 void enginestart(void);
-void enginestatepop(void);
-void enginestatepush(EngineState);
 void enginestop(void);
 
 /* game */
@@ -110,3 +106,10 @@ void inputupdate(void);
 
 /* ui */
 // uipopup(...);
+
+/* view */
+void viewstateanimate(void);
+void viewstatedraw(void);
+void viewstatepop(void);
+void viewstatepush(ViewState);
+void viewstateupdate(void);
