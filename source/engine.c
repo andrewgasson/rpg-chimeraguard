@@ -1,4 +1,5 @@
 #include "core.h"
+#include <assert.h>
 #include "geometry.h"
 #include "BearLibTerminal.h"
 #include "game.h"
@@ -6,6 +7,13 @@
 static int animtimer;
 static boolean drawrequest;
 static boolean enginerunning;
+static int engineviewcount;
+static ViewState engineviews[MaxViewStates];
+
+static void engineviewanimate(void);
+static void engineviewdraw(void);
+static ViewState *engineviewpeek(void);
+static void engineviewupdate(void);
 
 void
 enginestart(void)
@@ -29,7 +37,7 @@ enginestart(void)
 				enginerunning = False;
 			} else {
 				drawrequest = True;
-				viewstateupdate();
+				engineviewupdate();
 			}
 		}
 
@@ -38,12 +46,12 @@ enginestart(void)
 		if (animtimer > EngineAnimRate) {
 			animtimer = 0;
 			drawrequest = True;
-			viewstateanimate();
+			engineviewanimate();
 		}
 
 		if (drawrequest) {
 			drawrequest = False;
-			viewstatedraw();
+			engineviewdraw();
 		}
 
 		terminal_delay(1);
@@ -56,4 +64,62 @@ void
 enginestop(void)
 {
 	enginerunning = False;
+}
+
+void
+engineviewpop(void)
+{
+	assert(engineviewcount > 0);
+	engineviewcount--;
+}
+
+void
+engineviewpush(ViewState v)
+{
+	assert(engineviewcount < MaxViewStates);
+	engineviews[engineviewcount] = v;
+	engineviewcount++;
+}
+
+static
+void
+engineviewanimate(void)
+{
+	ViewState *current;
+
+	current = engineviewpeek();
+
+	if (current && current->animate)
+		current->animate();
+}
+
+static
+void
+engineviewdraw(void)
+{
+	ViewState *current;
+
+	current = engineviewpeek();
+
+	if (current && current->draw)
+		current->draw();
+}
+
+static
+ViewState*
+engineviewpeek(void)
+{
+	return engineviewcount > 0 ? &engineviews[engineviewcount - 1] : Null;
+}
+
+static
+void
+engineviewupdate(void)
+{
+	ViewState *current;
+
+	current = engineviewpeek();
+	assert(current != Null);
+	assert(current->update != Null);
+	current->update();
 }

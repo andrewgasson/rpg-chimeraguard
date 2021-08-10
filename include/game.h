@@ -47,6 +47,9 @@ struct Creature {
 };
 
 struct ViewState {
+	// boolean fullscreen; /* true stops lower views from drawing */
+	// boolean drawworld; /* true draws the game world before view */
+	// boolean processturns; /* true processes the game turns before update */
 	void (*animate)(void);
 	void (*close)(void);
 	void (*draw)(void);
@@ -89,15 +92,20 @@ void creaturemove(Creature*, flag);
 // void drawoverlay(); // multiplies colors with alphas, does not include chars
 // void drawtext(); // in area, wraps appropriately
 
+// void drawgameworld();
+
 /* engine */
 void enginestart(void);
 void enginestop(void);
+void engineviewpop(void);
+void engineviewpush(ViewState);
 
 /* game */
 void gamelaunch(void);
 void gameloadsave(int, flag);
 void gamenewsave(int);
 void gamesave(flag);
+// gamenextturn();
 
 /* input */
 boolean inputhasactive(void);
@@ -106,10 +114,3 @@ void inputupdate(void);
 
 /* ui */
 // uipopup(...);
-
-/* view */
-void viewstateanimate(void);
-void viewstatedraw(void);
-void viewstatepop(void);
-void viewstatepush(ViewState);
-void viewstateupdate(void);

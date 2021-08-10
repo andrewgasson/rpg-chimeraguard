@@ -13,7 +13,7 @@ gamelaunch(void)
 {
 	// Used for doing things like creating config and save files,
 	// setting the initial UI, and etc. It's the "game" starting point.
-	viewstatepush(ViewSandbox);
+	engineviewpush(ViewSandbox);
 	gamenewsave(0);
 }
 
