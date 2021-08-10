@@ -8,37 +8,40 @@ static int animtimer;
 static boolean drawrequest;
 static boolean enginerunning;
 static int engineviewcount;
-static ViewState engineviews[MaxViewStates];
+static ViewState *engineviews[MaxViewStates];
 
 static void engineanimate(void);
 static void enginedraw(void);
+static boolean engineisviewopen(ViewState*);
 static void engineupdate(void);
 
 void
 enginepopview(void)
 {
 	assert(engineviewcount > 0);
+	engineviews[engineviewcount - 1] = Null;
 	engineviewcount--;
 	drawrequest = True;
 }
 
 void
-enginepushview(ViewState v)
+enginepushview(ViewState *v)
 {
 	assert(engineviewcount < MaxViewStates);
+	assert(!engineisviewopen(v));
 	engineviews[engineviewcount] = v;
 	engineviewcount++;
 	drawrequest = True;
 }
 
 void
-enginesetview(ViewState v)
+enginesetview(ViewState *v)
 {
 	int i;
 
 	for (i = engineviewcount - 1; i >= 0; i--) {
-		if (engineviews[i].close)
-			engineviews[i].close();
+		if (engineviews[i]->close)
+			engineviews[i]->close();
 	}
 
 	engineviewcount = 0;
@@ -106,7 +109,7 @@ engineanimate(void)
 	animworld = True;
 
 	for (i = 0; i < engineviewcount; i++) {
-		if (engineviews[i].disableworldanim) {
+		if (engineviews[i]->disableworldanim) {
 			animworld = False;
 			break;
 		}
@@ -116,8 +119,8 @@ engineanimate(void)
 		// TODO: animate the world!
 	}
 
-	if (engineviews[engineviewcount - 1].animate)
-		engineviews[engineviewcount - 1].animate();
+	if (engineviews[engineviewcount - 1]->animate)
+		engineviews[engineviewcount - 1]->animate();
 }
 
 static
@@ -132,10 +135,10 @@ enginedraw(void)
 	drawworld = True;
 
 	for (i = 0; i < engineviewcount; i++) {
-		if (engineviews[i].disableworlddraw)
+		if (engineviews[i]->disableworlddraw)
 			drawworld = False;
 		
-		if (engineviews[i].fullscreen)
+		if (engineviews[i]->fullscreen)
 			lowestfullscreen = i;
 	}
 
@@ -146,11 +149,25 @@ enginedraw(void)
 	}
 
 	for (i = lowestfullscreen; i < engineviewcount; i++) {
-		if (engineviews[i].draw)
-			engineviews[i].draw();
+		if (engineviews[i]->draw)
+			engineviews[i]->draw();
 	}
 
 	terminal_refresh();
+}
+
+static
+boolean
+engineisviewopen(ViewState *v)
+{
+	int i;
+
+	for (i = 0; i < engineviewcount; i++) {
+		if (engineviews[i] == v)
+			return True;
+	}
+
+	return False;
 }
 
 static
@@ -169,11 +186,11 @@ engineupdate(void)
 	}
 
 	for (i = 0; i < engineviewcount; i++) {
-		if (engineviews[i].disableturnprocess) {
+		if (engineviews[i]->disableturnprocess) {
 			processturns = False;
 			break;
 		}
 	}
 
-	engineviews[engineviewcount - 1].update();
+	engineviews[engineviewcount - 1]->update();
 }

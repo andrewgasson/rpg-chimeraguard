@@ -58,8 +58,8 @@ struct ViewState {
 	void (*update)(void); /* mandatory */
 };
 
-extern const ViewState ViewMainMenu;
-extern const ViewState ViewSandbox;
+extern ViewState ViewMainMenu;
+extern ViewState ViewSandbox;
 
 extern int currentsaveindex;
 extern Creature player;
@@ -93,8 +93,8 @@ void creaturemove(Creature*, flag);
 
 /* engine */
 void enginepopview(void);
-void enginepushview(ViewState);
-void enginesetview(ViewState);
+void enginepushview(ViewState*);
+void enginesetview(ViewState*);
 void enginestart(void);
 void enginestop(void);
 

@@ -11,7 +11,7 @@ static void mainmenudraw(void);
 static void mainmenuopen(void);
 static void mainmenuupdate(void);
 
-const ViewState ViewMainMenu = {
+ViewState ViewMainMenu = {
 	.fullscreen = True,
 	.disableturnprocess = True,
 	.disableworldanim = True,
@@ -73,7 +73,7 @@ mainmenuupdate(void)
 
 	if (inputispressed(InputUISubmit)) {
 		if (mainmenucursor == 0)
-			enginesetview(ViewSandbox);
+			enginesetview(&ViewSandbox);
 		else
 			enginestop();
 	}

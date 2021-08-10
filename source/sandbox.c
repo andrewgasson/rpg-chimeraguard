@@ -11,7 +11,7 @@ static void sandboxdraw(void);
 static void sandboxopen(void);
 static void sandboxupdate(void);
 
-const ViewState ViewSandbox = {
+ViewState ViewSandbox = {
 	.fullscreen = False,
 	.disableturnprocess = False,
 	.disableworldanim = False,
@@ -74,5 +74,5 @@ sandboxupdate(void)
 	else if (inputispressed(InputMoveWest))
 		creaturemove(&player, CompassWest);
 	else if (inputispressed(InputUICancel))
-		enginesetview(ViewMainMenu);
+		enginesetview(&ViewMainMenu);
 }
