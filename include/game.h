@@ -82,7 +82,7 @@ boolean creaturecanmove(Creature*, flag);
 void creaturemove(Creature*, flag);
 
 /* draw */
-// void drawfill();
+void drawfill(int, int, int, int, color_t, color_t, int);
 // void drawlabel(); // single line, cut off, optional centering
 // void drawnineslice();
 // void drawoutline();
@@ -109,3 +109,6 @@ void gamesave(flag);
 boolean inputhasactive(void);
 boolean inputispressed(flag);
 void inputupdate(void);
+
+/* view */
+void viewboolprompt(callback, callback, char*, char*, flag);

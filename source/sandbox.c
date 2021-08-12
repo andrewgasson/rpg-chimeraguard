@@ -3,7 +3,11 @@
 #include "BearLibTerminal.h"
 #include "game.h"
 
-static boolean titleflash;
+//static boolean titleflash;
+static int xbox;
+static int ybox;
+static int wbox;
+static int hbox;
 
 static void sandboxanimate(void);
 static void sandboxclose(void);
@@ -27,7 +31,7 @@ static
 void
 sandboxanimate(void)
 {
-	titleflash = !titleflash;
+	//titleflash = !titleflash;
 }
 
 static
@@ -41,6 +45,7 @@ static
 void
 sandboxdraw(void)
 {
+	/*
 	// Title flash
 	if (titleflash)
 		terminal_color(color_from_name("amber"));
@@ -52,6 +57,15 @@ sandboxdraw(void)
 	// Player
 	terminal_color(color_from_argb(255, 255, 255, 255));
 	terminal_put(player.position.x, player.position.y, '@');
+	*/
+
+	int x;
+	int y;
+
+	x = terminal_state(TK_WIDTH / 2);
+	y = terminal_state(TK_HEIGHT / 2);
+
+	drawfill(x, y, 20, 20, color_from_name("amber"), color_from_argb(255, 0, 0, 0), '.');
 }
 
 static
@@ -65,6 +79,7 @@ static
 void
 sandboxupdate(void)
 {
+	/*
 	if (inputispressed(InputMoveNorth))
 		creaturemove(&player, CompassNorth);
 	else if (inputispressed(InputMoveEast))
@@ -75,4 +90,14 @@ sandboxupdate(void)
 		creaturemove(&player, CompassWest);
 	else if (inputispressed(InputUICancel))
 		enginesetview(&ViewMainMenu);
+	*/
+
+	if (inputispressed(InputUIUp))
+		ybox--;
+	else if (inputispressed(InputUIRight))
+		xbox++;
+	else if (inputispressed(InputUIDown))
+		ybox++;
+	else if (inputispressed(InputUILeft))
+		xbox--;
 }

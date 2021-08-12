@@ -181,15 +181,15 @@ engineupdate(void)
 
 	processturns = True;
 
-	if (processturns) {
-		// TODO
-	}
-
 	for (i = 0; i < engineviewcount; i++) {
 		if (engineviews[i]->disableturnprocess) {
 			processturns = False;
 			break;
 		}
+	}
+
+	if (processturns) {
+		// TODO
 	}
 
 	engineviews[engineviewcount - 1]->update();

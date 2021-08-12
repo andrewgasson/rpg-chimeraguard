@@ -27,3 +27,9 @@ enum {
 };
 
 #define Null NULL
+
+typedef void (*callback)(void);
+
+#define min(_v0, _v1) (_v0 < _v1 ? _v0 : _v1)
+#define max(_v0, _v1) (_v0 > _v1 ? _v0 : _v1)
+#define clamp(_v, _min, _max) (_v < _min ? _min : _v > _max ? _max : _v)
